@@ -192,8 +192,6 @@ void Mesh::LoadMaterial(tinygltf::Model& model, tinygltf::Primitive& primitive)
 	for (int i = 0; i < accessor.count; i++)
 	{
 		Vertex& vertex = vertices[i];
-
-		// TODO: Memcpy or send pointer
 		vertex.Color.x = mat.pbrMetallicRoughness.baseColorFactor[0];
 		vertex.Color.y = mat.pbrMetallicRoughness.baseColorFactor[1];
 		vertex.Color.z = mat.pbrMetallicRoughness.baseColorFactor[2];
@@ -217,6 +215,10 @@ void Mesh::LoadMaterial(tinygltf::Model& model, tinygltf::Primitive& primitive)
 	hasTextures = true;
 }
 
+// TODO: Textures are resources, and SRVs are nothign more than retrieved descriptions
+// of the given resource. Meaning that a mesh can technically reserve a table of 4 SRVs.
+// Then if we want to swap out a texture for a given resource, we just have to update the SRV in that
+// given range. This will be easier once we've an Asset database
 void Mesh::LoadTexture(tinygltf::Model& model, Texture** texture, int textureID, int& materialCheck)
 {
 	if(textureID != -1)

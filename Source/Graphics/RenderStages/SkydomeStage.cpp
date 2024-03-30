@@ -40,7 +40,7 @@ void SkydomeStage::RecordStage(ComPtr<ID3D12GraphicsCommandList2> commandList)
 	ComPtr<ID3D12Resource> screenBuffer = window->GetCurrentScreenBuffer();
 	CD3DX12_CPU_DESCRIPTOR_HANDLE screenRTV = window->GetCurrentScreenRTV();
 	CD3DX12_CPU_DESCRIPTOR_HANDLE depthView = window->GetDepthDSV();
-	CD3DX12_GPU_DESCRIPTOR_HANDLE skydomeData = CBVHeap->GetGPUHandleAt(testDome->GetHDRiSRVIndex());
+	CD3DX12_GPU_DESCRIPTOR_HANDLE skydomeData = CBVHeap->GetGPUHandleAt(testDome->GetIrradianceSRVIndex());
 	Camera& camera = scene->GetCamera();
 
 	glm::mat4 view = glm::lookAt(glm::vec3(0.0f), camera.GetForwardVector(), camera.GetUpwardVector());
