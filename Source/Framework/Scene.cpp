@@ -9,9 +9,12 @@ Scene::Scene(unsigned int windowWidth, unsigned int windowHeight)
 {
 	camera = new Camera(windowWidth, windowHeight);
 
-	// Makes sure that lights get updated 
-	// AFTER the renderer has fully initialized
+	// To ensure the light buffer is properly updated before wes start rendering
+	// We default to setting this to true
 	lightsEdited = true;
+
+	// Every scene should come with a groundplane
+	AddModel("Assets/Models/GroundPlane\\plane.gltf");
 }
 
 void Scene::Update(float deltaTime)

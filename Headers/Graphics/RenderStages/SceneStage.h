@@ -11,7 +11,7 @@ class ShadowStage;
 class SceneStage : public RenderStage
 {
 public:
-	SceneStage(Window* window, Scene* scene, ShadowStage* shadowStage);
+	SceneStage(Window* window, ShadowStage* shadowStage);
 
 	void RecordStage(ComPtr<ID3D12GraphicsCommandList2> commandList) override;
 	void SetScene(Scene* newScene);

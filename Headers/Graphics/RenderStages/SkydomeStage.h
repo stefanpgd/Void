@@ -12,7 +12,7 @@ class HDRI;
 class SkydomeStage : public RenderStage
 {
 public:
-	SkydomeStage(Window* window, Scene* scene);
+	SkydomeStage(Window* window);
 
 	void RecordStage(ComPtr<ID3D12GraphicsCommandList2> commandList) override;
 	void SetScene(Scene* newScene);

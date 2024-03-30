@@ -48,8 +48,8 @@ namespace RendererInternal
 }
 using namespace RendererInternal;
 
-Renderer::Renderer(const std::wstring& applicationName, Scene* scene, unsigned int windowWidth, 
-	unsigned int windowHeight) : scene(scene)
+Renderer::Renderer(const std::wstring& applicationName, unsigned int windowWidth, 
+	unsigned int windowHeight)
 {
 	// Initialization for all vital components for rendering //
 	SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
@@ -67,17 +67,14 @@ Renderer::Renderer(const std::wstring& applicationName, Scene* scene, unsigned i
 
 	InitializeImGui();
 
-	shadowStage = new ShadowStage(window, scene);
-	sceneStage = new SceneStage(window, scene, shadowStage);
+	shadowStage = new ShadowStage(window);
+	sceneStage = new SceneStage(window, shadowStage);
 	screenStage = new ScreenStage(window);
-	skydomeStage = new SkydomeStage(window, scene);
+	skydomeStage = new SkydomeStage(window);
 	convolutionStage = new HDRIConvolutionStage(window);
 
 	sceneStage->SetSkydome(skydomeStage->GetSkydomeHandle());
 	convolutionStage->BindHDRI(skydomeStage->GetHDRI());
-
-	// TODO: Move to scene
-	//this->scene->AddModel("Assets/Models/GroundPlane\\plane.gltf");
 }
 
 void Renderer::Update(float deltaTime) 
@@ -85,6 +82,7 @@ void Renderer::Update(float deltaTime)
 	shadowStage->Update(deltaTime);
 
 	skydomeStage->SetScene(scene);
+
 	// TODO: Maybe record render times in here, have a proper MS count etc.
 }
 
@@ -118,6 +116,10 @@ void Renderer::Render()
 void Renderer::SetScene(Scene* newScene)
 {
 	scene = newScene;
+
+	shadowStage->SetScene(newScene);
+	sceneStage->SetScene(newScene);
+	skydomeStage->SetScene(newScene);
 }
 
 void Renderer::Resize()

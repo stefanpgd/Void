@@ -14,7 +14,7 @@
 
 HDRI* testDome;
 
-SkydomeStage::SkydomeStage(Window* window, Scene* scene) : RenderStage(window), scene(scene)
+SkydomeStage::SkydomeStage(Window* window) : RenderStage(window)
 {
 	CreatePipeline();
 
@@ -27,6 +27,12 @@ SkydomeStage::SkydomeStage(Window* window, Scene* scene) : RenderStage(window), 
 
 void SkydomeStage::RecordStage(ComPtr<ID3D12GraphicsCommandList2> commandList)
 {
+	if(!scene)
+	{
+		assert(false && "Scene has never been set");
+		return;
+	}
+
 	// 0. Get all relevant objects //
 	DXDescriptorHeap* CBVHeap = DXAccess::GetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	DXDescriptorHeap* DSVHeap = DXAccess::GetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
@@ -63,9 +69,6 @@ void SkydomeStage::RecordStage(ComPtr<ID3D12GraphicsCommandList2> commandList)
 void SkydomeStage::SetScene(Scene* newScene)
 {
 	scene = newScene;
-
-	// SUPER TEMP //
-	testDome->HDRIDebugWindow();
 }
 
 CD3DX12_GPU_DESCRIPTOR_HANDLE SkydomeStage::GetSkydomeHandle()

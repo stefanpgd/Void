@@ -24,9 +24,12 @@ Engine::Engine(const std::wstring& applicationName) : applicationName(applicatio
 {
 	RegisterWindowClass();
 
+	renderer = new Renderer(this->applicationName, windowWidth, windowHeight);
 	activeScene = new Scene(windowWidth, windowHeight);
-	renderer = new Renderer(this->applicationName, activeScene, windowWidth, windowHeight);
 	editor = new Editor(activeScene);
+
+	// Set the loaded scene for the renderer to render
+	renderer->SetScene(activeScene);
 
 	clock = new std::chrono::high_resolution_clock();
 	t0 = std::chrono::time_point_cast<std::chrono::milliseconds>((clock->now())).time_since_epoch();

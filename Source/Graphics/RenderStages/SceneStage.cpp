@@ -12,14 +12,20 @@
 #include "Framework/Scene.h"
 #include <imgui_impl_dx12.h>
 
-SceneStage::SceneStage(Window* window, Scene* scene, ShadowStage* shadowStage) 
-	: RenderStage(window), scene(scene), shadowStage(shadowStage)
+SceneStage::SceneStage(Window* window, ShadowStage* shadowStage) 
+	: RenderStage(window), shadowStage(shadowStage)
 {
 	CreatePipeline();
 }
 
 void SceneStage::RecordStage(ComPtr<ID3D12GraphicsCommandList2> commandList)
 {
+	if(!scene)
+	{
+		assert(false && "Scene has never been set");
+		return;
+	}
+
 	// 0. Grab all relevant objects to perform stage //
 	DXDescriptorHeap* CBVHeap = DXAccess::GetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	DXDescriptorHeap* DSVHeap = DXAccess::GetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);

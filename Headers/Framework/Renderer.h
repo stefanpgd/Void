@@ -18,7 +18,7 @@ class HDRIConvolutionStage;
 class Renderer
 {
 public:
-	Renderer(const std::wstring& applicationName, Scene* scene, unsigned int windowWidth, unsigned int windowHeight);
+	Renderer(const std::wstring& applicationName, unsigned int windowWidth, unsigned int windowHeight);
 
 	void Update(float deltaTime);
 	void Render();

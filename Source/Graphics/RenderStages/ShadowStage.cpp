@@ -12,7 +12,7 @@
 
 #include <imgui.h>
 
-ShadowStage::ShadowStage(Window* window, Scene* scene) : RenderStage(window), scene(scene)
+ShadowStage::ShadowStage(Window* window) : RenderStage(window)
 {
 	depthBuffer = new DepthBuffer(depthBufferWidth, depthBufferHeight);
 
@@ -54,6 +54,12 @@ void ShadowStage::Update(float deltaTime)
 
 void ShadowStage::RecordStage(ComPtr<ID3D12GraphicsCommandList2> commandList)
 {
+	if(!scene)
+	{
+		assert(false && "Scene has never been set");
+		return;
+	}
+
 	ComPtr<ID3D12Resource> depthResource = depthBuffer->GetResource();
 	CD3DX12_CPU_DESCRIPTOR_HANDLE depthView = depthBuffer->GetDSV();
 
@@ -89,6 +95,11 @@ void ShadowStage::RecordStage(ComPtr<ID3D12GraphicsCommandList2> commandList)
 
 	TransitionResource(depthResource.Get(),
 	D3D12_RESOURCE_STATE_DEPTH_WRITE, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+}
+
+void ShadowStage::SetScene(Scene* newScene)
+{
+	scene = newScene;
 }
 
 DepthBuffer* ShadowStage::GetDepthBuffer()

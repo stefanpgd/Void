@@ -9,11 +9,13 @@ class Scene;
 class ShadowStage : public RenderStage
 {
 public:
-	ShadowStage(Window* window, Scene* scene);
+	ShadowStage(Window* window);
 
 	void Update(float deltaTime);
 
 	void RecordStage(ComPtr<ID3D12GraphicsCommandList2> commandList) override;
+
+	void SetScene(Scene* newScene);
 
 	DepthBuffer* GetDepthBuffer();
 	const glm::mat4& GetLightMatrix();
